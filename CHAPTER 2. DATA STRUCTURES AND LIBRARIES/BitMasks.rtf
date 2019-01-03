@@ -1,0 +1,74 @@
+1. Representation: A 32 (or 64)-bit signed integer for up to 32 (or 64) items. Without
+a loss of generality, all examples below use a 32-bit signed integer called S.
+Example: 5| 4| 3| 2| 1| 0 <- 0-based indexing from right
+32|16| 8| 4| 2| 1 <- power of 2
+S = 34 (base 10) = 1| 0| 0| 0| 1| 0 (base 2)
+F| E| D| C| B| A <- alternative alphabet label
+In the example above, the integer S = 34 or 100010 in binary also represents a
+small set {1, 5} with a 0-based indexing scheme in increasing digit significance
+(or {B, F} using the alternative alphabet label) because the second and the sixth
+bits (counting from the right) of S are on.
+To avoid issues with the two’s complement representation, use a 32-bit/64-bit signed integer to represent
+bitmasks of up to 30/62 items only, respectively.
+2. To multiply/divide an integer by 2, we only need to shift the bits in the integer
+left/right, respectively. This operation (especially the shift left operation) is important
+for the next few examples below. Notice that the truncation in the shift
+right operation automatically rounds the division-by-2 down, e.g. 17/2 = 8.
+S = 34 (base 10) = 100010 (base 2)
+S = S << 1 = S * 2 = 68 (base 10) = 1000100 (base 2)
+S = S >> 2 = S / 4 = 17 (base 10) = 10001 (base 2)
+S = S >> 1 = S / 2 = 8 (base 10) = 1000 (base 2) <- LSB is gone
+(LSB = Least Significant Bit)
+3. To set/turn on the j-th item (0-based indexing) of the set,
+use the bitwise OR operation S |= (1 << j).
+S = 34 (base 10) = 100010 (base 2)
+j = 3, 1 << j = 001000 <- bit ‘1’ is shifted to the left 3 times
+-------- OR (true if either of the bits is true)
+S = 42 (base 10) = 101010 (base 2) // update S to this new value 42
+4. To check if the j-th item of the set is on,
+use the bitwise AND operation T = S & (1 << j).
+If T = 0, then the j-th item of the set is off.
+If T != 0 (to be precise, T = (1 << j)), then the j-th item of the set is on.
+See Figure 2.1 for one such example.
+S = 42 (base 10) = 101010 (base 2)
+j = 3, 1 << j = 001000 <- bit ‘1’ is shifted to the left 3 times
+-------- AND (only true if both bits are true)
+T = 8 (base 10) = 001000 (base 2) -> not zero, the 3rd item is on
+S = 42 (base 10) = 101010 (base 2)
+j = 2, 1 << j = 000100 <- bit ‘1’ is shifted to the left 2 times
+-------- AND
+T = 0 (base 10) = 000000 (base 2) -> zero, the 2rd item is off
+5. To clear/turn off the j-th item of the set,
+use8 the bitwise AND operation S &= ∼(1 << j).
+S = 42 (base 10) = 101010 (base 2)
+j = 1, ~(1 << j) = 111101 <- ‘~’ is the bitwise NOT operation
+-------- AND
+S = 40 (base 10) = 101000 (base 2) // update S to this new value 40
+6. To toggle (flip the status of) the j-th item of the set,
+use the bitwise XOR operation S ∧= (1 << j).
+S = 40 (base 10) = 101000 (base 2)
+j = 2, (1 << j) = 000100 <- bit ‘1’ is shifted to the left 2 times
+-------- XOR <- true if both bits are different
+S = 44 (base 10) = 101100 (base 2) // update S to this new value 44
+S = 40 (base 10) = 101000 (base 2)
+j = 3, (1 << j) = 001000 <- bit ‘1’ is shifted to the left 3 times
+-------- XOR <- true if both bits are different
+S = 32 (base 10) = 100000 (base 2) // update S to this new value 32
+7. To get the value of the least significant bit that is on (first from the right),
+use T = (S & (-S)).
+S = 40 (base 10) = 000...000101000 (32 bits, base 2)
+-S = -40 (base 10) = 111...111011000 (two’s complement)
+----------------- AND
+T = 8 (base 10) = 000...000001000 (3rd bit from right is on)
+8. To turn on all bits in a set of size n, use S = (1 << n) - 1
+(be careful with overflows).
+Example for n = 3
+S + 1 = 8 (base 10) = 1000 <- bit ‘1’ is shifted to left 3 times
+1
+------ -
+S = 7 (base 10) = 111 (base 2)
+Example for n = 5
+S + 1 = 32 (base 10) = 100000 <- bit ‘1’ is shifted to left 5 times
+1
+-------- -
+S = 31 (base 10) = 11111 (base 2)
