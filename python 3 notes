@@ -1,0 +1,5 @@
+#enumerate alphabet chars
+>>> import string
+>>> string.ascii_lowercase
+'abcdefghijklmnopqrstuvwxyz'
+__________________________________________________________
