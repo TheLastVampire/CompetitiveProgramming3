@@ -3,3 +3,6 @@
 >>> string.ascii_lowercase
 'abcdefghijklmnopqrstuvwxyz'
 __________________________________________________________
+#print the binary representation of an int
+>>> "{0:b}".format(37)
+'100101'
