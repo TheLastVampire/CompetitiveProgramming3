@@ -6,3 +6,9 @@ __________________________________________________________
 #print the binary representation of an int
 >>> "{0:b}".format(37)
 '100101'
+__________________________________________________________
+#count occurences of a character in a string
+>>> sentence = 'Mary had a little lamb'
+>>> sentence.count('a')
+4
+__________________________________________________________
